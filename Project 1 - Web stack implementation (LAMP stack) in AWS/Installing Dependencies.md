@@ -80,4 +80,15 @@ Steps
 
 To install these 3 packages at once, run: sudo apt install php libapache2-mod-php php-mysql
 
+<img width="567" alt="image" src="https://user-images.githubusercontent.com/18741380/221715109-3397087e-c9d4-47ce-b970-6b96424fff54.png">
 
+
+After installation is done, run the following command to confirm your PHP version: php -v
+
+<img width="563" alt="image" src="https://user-images.githubusercontent.com/18741380/221715224-8bf2d544-c7b0-47b4-8ab9-cd237fabce3d.png">
+
+
+At this point, your LAMP stack is completely installed and fully operational.
+
+
+Next, test that login to MySQL console works. Run: sudo mysql -p
