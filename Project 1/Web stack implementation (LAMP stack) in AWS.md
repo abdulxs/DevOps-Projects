@@ -30,6 +30,7 @@ run the command
 (initial command)
 
 In case you are unable to connect
+
 <img width="575" alt="image" src="https://user-images.githubusercontent.com/18741380/221699693-e860eb37-ee13-401f-bf6c-ca86d1ca1d30.png">
  
 check the security group configuration of your ec2 instance and ensure you set a rule to allow inbound traffic
