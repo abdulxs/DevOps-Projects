@@ -33,7 +33,13 @@ run the command
  I got the error below because my private key is too exposed and not protected. In case you get the same error, see below.
  
  To fix this, I ran the command 'sudo chmod 600 /path/to/my/key.pem' as seen below
- <img width="598" alt="image" src="https://user-images.githubusercontent.com/18741380/221697136-2303ae61-9be3-479d-85b6-e44d91d30c7a.png">
+ <img width="569" alt="image" src="https://user-images.githubusercontent.com/18741380/221699171-496c1ab0-049f-44c4-aa07-52dcc645e3df.png">
+
 
 I ran the command (initial command) again and I was able to ssh into the instance
+<img width="567" alt="image" src="https://user-images.githubusercontent.com/18741380/221698876-ea5e2ea6-0d6f-4feb-a42f-5e5a492da519.png">
 
+<img width="577" alt="image" src="https://user-images.githubusercontent.com/18741380/221698811-9e98a8ad-aef2-40c6-8c4c-b7b03fc542b2.png">
+
+
+ 
