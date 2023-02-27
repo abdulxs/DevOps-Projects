@@ -31,11 +31,9 @@ Access the Apache2 service locally in our Ubuntu shell by running: curl http://l
 
 This command would output the Apache2 payload indicating that it is accessible locally in the Ubuntu shell.
 
-Next, test that Apache HTTP server can respond to requests from the Internet. 
-Open a browser and type the public IP of the Ubutun instance: http://3.235.248.184/:80 This outputs the Apache2 default page.
+Next, test that Apache HTTP server can respond to requests from the Internet. Open a browser and type the public IP of the Ubuntu instance: http://3.80.162.49:80 This outputs the Apache2 default page.
+
 
 <img width="1364" alt="image" src="https://user-images.githubusercontent.com/18741380/221712109-df8bef83-afe8-4bb6-9f83-b2f8b7ea411d.png">
-
-Next, test that Apache HTTP server can respond to requests from the Internet. Open a browser and type the public IP of the Ubutun instance: http://3.235.248.184/:80 This outputs the Apache2 default page.
 
 
