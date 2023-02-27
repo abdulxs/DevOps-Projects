@@ -26,3 +26,14 @@ In the Terminal, type _cd Downloads_ to navigate to the location of the key-pair
 Inside the Downloads directory, connect to the EC2 instance using its Public DNS.
 
 run the command
+
+(initial command)
+
+<img width="566" alt="image" src="https://user-images.githubusercontent.com/18741380/221694770-e5ae8ec5-aeb6-470a-a62c-1f588c011ac7.png">
+ I got the error below because my private key is too exposed and not protected. In case you get the same error, see below.
+ 
+ To fix this, I ran the command 'sudo chmod 600 /path/to/my/key.pem' as seen below
+ <img width="598" alt="image" src="https://user-images.githubusercontent.com/18741380/221697136-2303ae61-9be3-479d-85b6-e44d91d30c7a.png">
+
+I ran the command (initial command) again and I was able to ssh into the instance
+
