@@ -1,6 +1,6 @@
 INSTALLING DEPENDENCIES
 
-Installing Apache and updating the firewall
+INSTALLING APACHE AND UPDATING THE FIREWALL
 
 Steps
 Install Apache using Ubuntu’s package manager ‘apt', Run the following commands: To update a list of packages in package manager: sudo apt update
@@ -35,5 +35,49 @@ Next, test that Apache HTTP server can respond to requests from the Internet. Op
 
 
 <img width="1364" alt="image" src="https://user-images.githubusercontent.com/18741380/221712109-df8bef83-afe8-4bb6-9f83-b2f8b7ea411d.png">
+
+
+INSTALLING MYSQL
+Steps
+In this step, install a Database Management System (DBMS) to be able to store and manage data for the site in a relational database.
+
+Run ‘apt’ to acquire and install this software, run: sudo apt install mysql-server
+
+<img width="567" alt="image" src="https://user-images.githubusercontent.com/18741380/221713320-24ee7590-adff-4d1a-96c5-d7429af6bfe1.png">
+
+
+
+Confirm intallation by typing Y when prompted.
+
+Once installation is complete, log in to the MySQL console by running: sudo mysql
+
+<img width="576" alt="image" src="https://user-images.githubusercontent.com/18741380/221713530-23b48d0a-2291-4d35-85b6-360f75afbc83.png">
+
+
+Next, run a security script that comes pre-installed with MySQL, to remove some insecure default settings and lock down access to your database system. run: ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'PassWord.1'; then exit MySQL shell by typing exit and enter.
+
+<img width="574" alt="image" src="https://user-images.githubusercontent.com/18741380/221713845-a80f773c-f30d-49f8-b403-50124854224b.png">
+
+
+
+Run interactive script by typing: sudo mysql_secure_installation and following the instructions.
+
+<img width="574" alt="image" src="https://user-images.githubusercontent.com/18741380/221714403-46ddecfe-8e09-42ae-9848-acbaea121b20.png">
+
+
+Next, test that login to MySQL console works. Run: sudo mysql -p
+
+
+<img width="569" alt="image" src="https://user-images.githubusercontent.com/18741380/221714572-445e97ba-61b3-4d39-bafc-36d20a909726.png">
+
+
+Type exit and enter to exit console.
+
+
+INSTALLING PHP
+
+Steps
+
+To install these 3 packages at once, run: sudo apt install php libapache2-mod-php php-mysql
 
 
