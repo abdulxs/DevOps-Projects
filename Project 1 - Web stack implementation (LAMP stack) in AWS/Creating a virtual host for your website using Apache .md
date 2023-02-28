@@ -1,0 +1,82 @@
+CREATING A VIRTUAL HOST FOR YOUR WEBSITE USING APACHE
+
+Steps
+
+Setting up a domain called projectlamp. Create the directory for projectlamp using ‘mkdir’. Run: sudo mkdir /var/www/projectlamp
+
+assign ownership of the directory with your current system user, run: sudo chown -R $USER:$USER /var/www/projectlamp
+
+<img width="547" alt="image" src="https://user-images.githubusercontent.com/18741380/221716415-3cfb14d6-f7bc-4fa8-9427-a9aa6de0deed.png">
+
+
+Next, create and open a new configuration file in Apache’s sites-available directory. 
+
+Type: sudo vi /etc/apache2/sites-available/projectlamp.conf
+
+This will create a new blank file. Paste in the following bare-bones configuration by hitting on i on the keyboard to enter the insert mode,
+and paste the text: 
+
+*<VirtualHost :80> ServerName projectlamp ServerAlias www.projectlamp ServerAdmin webmaster@localhost DocumentRoot /var/www/projectlamp ErrorLog ${APACHE_LOG_DIR}/error.log CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+<img width="569" alt="image" src="https://user-images.githubusercontent.com/18741380/221716881-17df6044-5527-4c23-b0df-197290625ad5.png">
+
+To save and close the file. Hit the esc button on the keyboard, Type :, Type wq. w for write and q for quit and Hit ENTER to save the file. 
+
+Use the ls command to show the new file in the sites-available directory: sudo ls /etc/apache2/sites-available
+
+<img width="566" alt="image" src="https://user-images.githubusercontent.com/18741380/221717171-b026fc6f-7d16-409c-bbc9-60995348ec2e.png">
+
+
+Next, use a2ensite command to enable the new virtual host: sudo a2ensite projectlamp
+
+Disable the default website that comes installed with Apache. type: sudo a2dissite 000-default
+
+<img width="582" alt="image" src="https://user-images.githubusercontent.com/18741380/221718061-2048b6cd-17a0-453a-953f-c6782381830b.png">
+
+
+
+
+Ensure your configuration file doesn’t contain syntax errors, run: sudo apache2ctl configtest
+
+<img width="575" alt="image" src="https://user-images.githubusercontent.com/18741380/221718173-a7f25745-82d6-48c0-bf7e-903660632c03.png">
+
+
+Finally, reload Apache so these changes take effect: sudo systemctl reload apache2
+
+<img width="569" alt="image" src="https://user-images.githubusercontent.com/18741380/221718325-c17d5895-45cb-435f-a600-7c429190b7bc.png">
+
+
+The website is active, but the web root /var/www/projectlamp is still empty. 
+
+Create an index.html file in that location so that we can test that the virtual host works as expected: 
+
+sudo echo 'Hello LAMP from hostname' $(curl -s http://169.254.169.254/latest/meta-data/public-hostname) 'with public IP' $(curl -s http://169.254.169.254/latest/meta-data/public-ipv4) > /var/www/projectlamp/index.html
+
+<img width="568" alt="image" src="https://user-images.githubusercontent.com/18741380/221719088-0e9e4cf5-d5c7-48c3-9456-95670c396b74.png">
+
+
+Reload the public IP to see changes to the apache2 default page.
+
+<img width="1362" alt="image" src="https://user-images.githubusercontent.com/18741380/221719162-20abc54c-3a29-4c3d-a469-9c80ddd66574.png">
+
+
+ENABLE PHP ON THE WEBSITE
+
+Steps
+
+With the default DirectoryIndex settings on Apache, a file named index.html will always take precedence over an index.php file. 
+
+To make index.php file tak precedence need to edit the /etc/apache2/mods-enabled/dir.conf file and change the order in which the index.php file is listed within the DirectoryIndex directive.
+
+Run: sudo vim /etc/apache2/mods-enabled/dir.conf then: #Change this: #DirectoryIndex index.html index.cgi index.pl index.php index.xhtml index.htm #To this: DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm
+
+Save and close file.
+
+Next, reload Apache so the changes take effect, type: sudo systemctl reload apache2
+
+Finally, we will create a PHP script to test that PHP is correctly installed and configured on your server. Create a new file named index.php inside the custom web root folder, run: vim /var/www/projectlamp/index.php
+
+This will open a blank file. Add the PHP code: <?php phpinfo();
+
+Save and close the file, then refresh the page to see changes.
+
