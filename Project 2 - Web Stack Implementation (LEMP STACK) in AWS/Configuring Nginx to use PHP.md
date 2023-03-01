@@ -1,0 +1,219 @@
+CONFIGURING NGINX TO USE PHP PROCESSOR
+
+Steps
+
+Now that PHP components are installed. Next, configure Nginx to use them.
+
+Create the root web directory for your_domain as follows:sudo mkdir /var/www/projectLEMP
+
+<img width="415" alt="image" src="https://user-images.githubusercontent.com/18741380/222273774-fc5accaa-5777-454a-8953-67a538d640ce.png">
+
+Next, assign ownership of the directory with the $USER environment variable, which will reference your current system user: sudo chown -R $USER:$USER /var/www/projectLEMP
+
+<img width="514" alt="image" src="https://user-images.githubusercontent.com/18741380/222273997-22b6002c-6848-4d37-a3f1-b7ce795c2e57.png">
+
+
+Then, open a new configuration file in Nginx’s sites-available directory using your preferred command-line editor. 
+
+Here, we’ll use nano: sudo nano /etc/nginx/sites-available/projectLEMP
+
+<img width="525" alt="image" src="https://user-images.githubusercontent.com/18741380/222275031-aba4f314-fd89-4305-b250-c24835642e68.png">
+
+
+This will create a new blank file. Paste in the following bare-bones configuration:
+
+
+server {
+    listen 80;
+    server_name projectLEMP www.projectLEMP;
+    root /var/www/projectLEMP;
+
+    index index.html index.htm index.php;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+     }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}
+
+<img width="571" alt="image" src="https://user-images.githubusercontent.com/18741380/222274696-7f8e270e-cdc8-4960-a63d-2bd0460c832c.png">
+
+
+In the namo editor, enter CTRL+X to exit and Y to confirm.
+
+Activate the configuration by linking to the config file from Nginx’s sites-enabled directory, run: sudo ln -s /etc/nginx/sites-available/projectLEMP /etc/nginx/sites-enabled/
+
+test your configuration for syntax errors by typing: sudo nginx -t
+
+<img width="573" alt="image" src="https://user-images.githubusercontent.com/18741380/222275337-a7519230-4ca0-475d-90e1-d4ea8e85fd3a.png">
+
+We need to disable default Nginx host that is currently configured to listen on port 80. 
+
+For this, run: sudo unlink /etc/nginx/sites-enabled/default
+
+<img width="509" alt="image" src="https://user-images.githubusercontent.com/18741380/222275718-0dd90615-ee77-4f92-9dd1-6d12550ad2c8.png">
+
+Next, reload Nginx to apply the changes: sudo systemctl reload nginx
+
+<img width="499" alt="image" src="https://user-images.githubusercontent.com/18741380/222275775-0625c055-7718-4dbf-a91e-627d0dcaafe1.png">
+
+The website is now active, but the web root /var/www/projectLEMP is still empty.
+
+Create an index.html file in that location so that we can test that the new server block works as expected
+
+run : sudo echo 'Hello LEMP from hostname' $(curl -s http://169.254.169.254/latest/meta-data/public-hostname) 'with public IP' $(curl -s http://169.254.169.254/latest/meta-data/public-ipv4) > /var/www/projectLEMP/index.html
+
+<img width="568" alt="image" src="https://user-images.githubusercontent.com/18741380/222276216-6a546fb5-d2a9-4e92-b9ab-a5359f6cc89e.png">
+
+Open a browser and try to open the website URL using IP address: http://Public-IP-Address:80
+
+<img width="1328" alt="image" src="https://user-images.githubusercontent.com/18741380/222276500-79109ad4-bedc-4231-8686-4efe7c733f50.png">
+
+
+Now that LAMP stack is completely installed and fully operational.
+
+We test it to validate that Nginx can correctly hand .php files off to your PHP processor.
+
+Open a new file called info.php within your document root in your text editor
+
+run: sudo nano /var/www/projectLEMP/info.php
+
+<img width="565" alt="image" src="https://user-images.githubusercontent.com/18741380/222277573-592ae19f-0ed9-44ed-ad18-7aee29754285.png">
+
+Type the following lines into the new file.
+
+<?php
+phpinfo();
+
+<img width="1221" alt="image" src="https://user-images.githubusercontent.com/18741380/222277994-29efd612-4fec-4185-9cf1-c846918f6165.png">
+
+You can now access this page in your web browser by visiting the domain name or public IP address you’ve set up in your Nginx configuration file, followed by /info.php: http://server_domain_or_IP/info.php
+
+<img width="563" alt="image" src="https://user-images.githubusercontent.com/18741380/222278259-4778c231-0641-4e98-8b52-5fb49b93aaf3.png">
+
+Remove the created file, as it contains sensitive information about your PHP environment and your Ubuntu server: sudo rm /var/www/your_domain/info.php
+
+<img width="568" alt="image" src="https://user-images.githubusercontent.com/18741380/222278934-fa56c2b1-939c-43db-9fe2-9b8dc876b2d9.png">
+
+RETRIEVING DATA FROM MYSQL DATABASE WITH PHP (CONTINUED)
+
+Steps
+
+The goal in this step is to create a test database (DB) with simple "To do list" and configure access to it, so the Nginx website would be able to query data from the DB and display it.
+
+Because the native MySQL PHP library mysqlnd currently doesn’t support caching_sha2_authentication, the default authentication method for MySQL 8. We’ll need to create a new user with the mysql_native_password authentication method in order to be able to connect to the MySQL database from PHP.
+
+I will be creating a database named example_database and a user named example_user.
+
+Connect to the MySQL console using the root account: sudo mysql -p
+
+<img width="562" alt="image" src="https://user-images.githubusercontent.com/18741380/222279567-917d2048-9448-441a-9753-f91c5c025728.png">
+
+To create a new database, run the following command from your MySQL console: CREATE DATABASE example_database;
+
+<img width="568" alt="image" src="https://user-images.githubusercontent.com/18741380/222280193-149d99b5-9d70-4e58-8654-b9f9ef069f5e.png">
+
+Next, create a new user and grant him full privileges on the database. 
+
+The following command creates a new user named example_user, using mysql_native_password as default authentication method. 
+
+Run: CREATE USER 'example_user'@'%' IDENTIFIED WITH mysql_native_password BY 'PassWord1@';
+
+<img width="558" alt="image" src="https://user-images.githubusercontent.com/18741380/222280884-ffcef580-9ee5-4259-8309-3d5300e267ea.png">
+
+Next, give this user permission over the example_database database: GRANT ALL ON example_database.* TO 'example_user'@'%';
+
+This will give the example_user user full privileges over the example_database database, while preventing this user from creating or modifying other databases on your server.
+
+<img width="569" alt="image" src="https://user-images.githubusercontent.com/18741380/222281196-6dda606d-cc34-49d5-9cc4-fc8c374117c6.png">
+
+
+Exit the console: exit
+
+Now test if the new user has the proper permissions by logging in to the MySQL console again, this time using the custom user credentials: mysql -u example_user -p
+
+<img width="563" alt="image" src="https://user-images.githubusercontent.com/18741380/222281435-be63ebea-2a4a-445b-a8b1-7c29919d396d.png">
+
+After logging in to the MySQL console, confirm that you have access to the example_database database: SHOW DATABASES;
+
+<img width="571" alt="image" src="https://user-images.githubusercontent.com/18741380/222282625-428cbc61-4de4-4949-af55-990948e49019.png">
+
+Next, we’ll create a test table named todo_list. From the MySQL console, run the following statement:
+
+```
+
+CREATE TABLE example_database.todo_list (
+item_id INT AUTO_INCREMENT,
+content VARCHAR(255),
+PRIMARY KEY(item_id)
+);
+
+```
+
+<img width="570" alt="image" src="https://user-images.githubusercontent.com/18741380/222283081-e9f220e1-549d-49ee-b936-a21c19e8751f.png">
+
+Insert a few rows of content in the test table.
+
+Repeat the next command a few times, using different VALUES: INSERT INTO example_database.todo_list (content) VALUES ("My first item");
+
+<img width="570" alt="image" src="https://user-images.githubusercontent.com/18741380/222283111-dc6b3e8f-0779-4309-902d-58909e432198.png">
+
+Insert a few rows of content in the test table. Repeat the next command a few times, using different VALUES: INSERT INTO example_database.todo_list (content) VALUES ("My first important item");
+
+
+<img width="570" alt="image" src="https://user-images.githubusercontent.com/18741380/222283142-f8b43d56-128f-44d4-b3cf-b680a2844643.png">
+
+To confirm that the data was successfully saved to your table, run: SELECT * FROM example_database.todo_list;
+
+<img width="564" alt="image" src="https://user-images.githubusercontent.com/18741380/222283317-0911229a-4147-4aad-9cbb-6b13c442faed.png">
+
+After confirming, exit the console: exit
+
+Next, create a PHP script that will connect to MySQL and query for your content. 
+
+Create a new PHP file in your custom web root directory using your preferred editor. We’ll use vi editor for that: sudo vi /var/www/projectLEMP/todo_list.php
+
+Copy this content into your todo_list.php script:
+
+```
+
+<?php
+$user = "example_user";
+$password = "PassWord1@";
+$database = "example_database";
+$table = "todo_list";
+
+try {
+  $db = new PDO("mysql:host=localhost;dbname=$database", $user, $password);
+  echo "<h2>TODO</h2><ol>";
+  foreach($db->query("SELECT content FROM $table") as $row) {
+    echo "<li>" . $row['content'] . "</li>";
+  }
+  echo "</ol>";
+} catch (PDOException $e) {
+    print "Error!: " . $e->getMessage() . "<br/>";
+    die();
+}
+
+```
+
+<img width="565" alt="image" src="https://user-images.githubusercontent.com/18741380/222284860-83ea2b90-72e8-438d-915f-d022259f0f32.png">
+
+Save and close the file when you are done editing.
+
+Access this page in the web browser by visiting the domain name or public IP address configured for the website, followed by /todo_list.php: http://<Public_domain_or_IP>/todo_list.php
+
+<img width="1195" alt="image" src="https://user-images.githubusercontent.com/18741380/222285739-22dfc41e-5d0b-42ad-8a8c-6c8429f64276.png">
+
+
+
+
+
