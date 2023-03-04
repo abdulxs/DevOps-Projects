@@ -325,7 +325,25 @@ console.log(`Server running on port ${port}`)
  <img width="566" alt="image" src="https://user-images.githubusercontent.com/18741380/222858013-9b68e414-022a-4185-a77d-1790ae9667fa.png">
 
  
+ I'm getting an error.
  
+ This is due to an error made earlier, the routes folder should have been created inside the Todo directory rather than the home directory
+
+ FIX
+ 
+ run the command below to move the path top the Todo folder
+ 
+ first run : ```cd Todo``` then ```mkdir routes``` to create the folder
+ 
+ then run ``` cp -r ~/routes/api.js ~/Todo/routes/api.js ``` to copy the file topm the new directory
+ 
+ <img width="566" alt="image" src="https://user-images.githubusercontent.com/18741380/222925187-7e910019-f0a2-4a1a-8127-81661fb6caf4.png">
+
+  try to start the server again using the command: ```node index.js``` and it should be fine
+ 
+ 
+ <img width="575" alt="image" src="https://user-images.githubusercontent.com/18741380/222925084-38a4964b-714e-417d-9535-992d1a6dbfc1.png">
+
  
   
 
