@@ -344,8 +344,29 @@ console.log(`Server running on port ${port}`)
  
  <img width="575" alt="image" src="https://user-images.githubusercontent.com/18741380/222925084-38a4964b-714e-417d-9535-992d1a6dbfc1.png">
 
+ You shall see a message Database connected successfully, if so – we have our backend configured. Now we are going to test it.
  
+ 
+ Testing Backend Code without Frontend using RESTful API
+ 
+Because we do not have a frontend UI yet. We need ReactJS code to achieve that. 
+ 
+But during development, we will need a way to test our code using RESTfulL API. 
+ 
+Therefore, we will need to make use of some API development client to test our code. We will use Postman to test our API.
+
+Create a POST request to the API http://<PublicIP-or-PublicDNS>:5000/api/todos 
+ 
+This request sends a new task to the To-Do list so the application could store it in the database. 
+ 
+Also set header key Content-Type as application/json
   
+<img width="997" alt="image" src="https://user-images.githubusercontent.com/18741380/222925791-baaa5112-5d72-4e9d-849c-03eaaf59e19b.png">
+
+Create a GET request to your API on http://<PublicIP-or-PublicDNS>:5000/api/todos This request retrieves all existing records from the To-do application.
+ 
+<img width="1008" alt="image" src="https://user-images.githubusercontent.com/18741380/222925905-2f9f3601-3c7d-4b1a-bed5-e351f436f035.png">
+
 
 
  
