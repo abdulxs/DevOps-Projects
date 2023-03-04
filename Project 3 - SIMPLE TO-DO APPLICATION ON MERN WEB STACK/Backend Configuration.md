@@ -1,3 +1,6 @@
+
+
+
 To deploy a simple To-Do application that creates To-Do lists
 
 BACKEND CONFIGURATION
@@ -120,6 +123,213 @@ Create a folder called routes with this command ```mkdir routes```
 
 Change directory to routes folder and create a file api.js with the command: touch api.js
 
+<img width="577" alt="image" src="https://user-images.githubusercontent.com/18741380/222853028-d494f7c5-ee83-4a9f-8f31-6bd01f06003a.png">
 
+Open the file with the command below vim api.js
+
+Copy and save the code below into the file:
+ 
+```
+ const express = require ('express');
+const router = express.Router();
+
+router.get('/todos', (req, res, next) => {
+
+});
+
+router.post('/todos', (req, res, next) => {
+
+});
+
+router.delete('/todos/:id', (req, res, next) => {
+
+})
+
+module.exports = router;
+ 
+ ```
+ 
+<img width="565" alt="image" src="https://user-images.githubusercontent.com/18741380/222853250-daf18f0c-941e-40a4-a51f-fc2f20b867d4.png">
+
+ 
+ 
+ 
+ MODELS
+ 
+To create a Schema and a model, install mongoose which is a Node.js package that makes working with mongodb easier. 
+ 
+Change directory back Todo folder with cd .. and install Mongoose with the following command: ```npm install mongoose```
+
+Create a new folder models, then change directory into the newly created models folder. 
+ 
+Inside the models folder, create a file and name it todo.js with the following command: ```mkdir models && cd models && touch todo.js```
+ 
+<img width="570" alt="image" src="https://user-images.githubusercontent.com/18741380/222853733-cd95c57c-4c47-49db-838a-b1a080f4f003.png">
+ 
+Open the file created with ```vim todo.js``` then paste the code below in the file:
+ 
+```
+ 
+ const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+//create schema for todo
+const TodoSchema = new Schema({
+action: {
+type: String,
+required: [true, 'The todo text field is required']
+}
+})
+
+//create model for todo
+const Todo = mongoose.model('todo', TodoSchema);
+
+module.exports = Todo;
+ 
+ ```
+ 
+ <img width="565" alt="image" src="https://user-images.githubusercontent.com/18741380/222854220-2650b66a-ceb1-40c5-94eb-00a17d34a27b.png">
+
+ 
+ Next, we update our routes from the file api.js in ‘routes’ directory to make use of the new model. 
+ 
+ In routes directory, open api.js with ```vim api.js```, delete the code inside with ```:%d``` command and paste the code below into it then save and exit
+ 
+ ```
+ 
+ const express = require ('express');
+const router = express.Router();
+const Todo = require('../models/todo');
+
+router.get('/todos', (req, res, next) => {
+
+//this will return all the data, exposing only the id and action field to the client
+Todo.find({}, 'action')
+.then(data => res.json(data))
+.catch(next)
+});
+
+router.post('/todos', (req, res, next) => {
+if(req.body.action){
+Todo.create(req.body)
+.then(data => res.json(data))
+.catch(next)
+}else {
+res.json({
+error: "The input field is empty"
+})
+}
+});
+
+router.delete('/todos/:id', (req, res, next) => {
+Todo.findOneAndDelete({"_id": req.params.id})
+.then(data => res.json(data))
+.catch(next)
+})
+
+module.exports = router;
+ 
+ ```
+
+ <img width="566" alt="image" src="https://user-images.githubusercontent.com/18741380/222854558-59dcbffd-60f4-48da-a6ba-9a54a20ae37e.png">
+
+ <img width="566" alt="image" src="https://user-images.githubusercontent.com/18741380/222854664-185f4d83-f442-4cc5-8c43-0e01a7f58c96.png">
+
+ 
+ 
+ MONGODB DATABASE
+ 
+A database is required where data will be stored. For this we will make use of mLab. 
+ 
+Sign up for a shared clusters free account, Sign up on https://www.mongodb.com/atlas-signup-from-mlab. 
+ 
+Follow the sign up process, select AWS as the cloud provider, and choose a region.
+
+For the purposes of this project, allow access to the MongoDB database from anywhere.
+
+Make sure you change the time of deleting the entry from 6 Hours to 1 Week
+
+Create a MongoDB database and collection inside mLab
+ 
+<img width="1436" alt="image" src="https://user-images.githubusercontent.com/18741380/222856613-6c2e9054-9f46-4bc0-b768-a4d28f199cae.png">
+
+ Next, in the index.js file, we specified process.env to access environment variables, but we are yet to create the file. 
+ 
+ Now, create a file in the Todo directory and name it .env To do this type:
+
+ ```
+touch .env
+vi .env
+ ```
+ 
+ 
+Then add the connection string to access the database in it, just as below: ```DB = 'mongodb+srv://<username>:<password>@<network-address>/<dbname>?retryWrites=true&w=majority'```
+
+Update the index.js to reflect the use of .env so that Node.js can connect to the database. 
+ 
+Delete existing content in the file, and update it with the following steps:
+ 
+using vim, follow below steps: Open the file with vim index.js and enter. Type  ```:%d``` and enter. This will delete the entire content. 
+
+ <img width="565" alt="image" src="https://user-images.githubusercontent.com/18741380/222857753-3c3296bf-82ca-4c70-a05b-9edab7441c23.png">
+ 
+ Next, press i to enter the insert mode in vim. then, paste the entire code below in the file:
+ 
+ 
+ ```
+ 
+ const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const routes = require('./routes/api');
+const path = require('path');
+require('dotenv').config();
+
+const app = express();
+
+const port = process.env.PORT || 5000;
+
+//connect to the database
+mongoose.connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true })
+.then(() => console.log(`Database connected successfully`))
+.catch(err => console.log(err));
+
+//since mongoose promise is depreciated, we overide it with node's promise
+mongoose.Promise = global.Promise;
+
+app.use((req, res, next) => {
+res.header("Access-Control-Allow-Origin", "\*");
+res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+next();
+});
+
+app.use(bodyParser.json());
+
+app.use('/api', routes);
+
+app.use((err, req, res, next) => {
+console.log(err);
+next();
+});
+
+app.listen(port, () => {
+console.log(`Server running on port ${port}`)
+});
+ 
+ ```
+ 
+ <img width="572" alt="image" src="https://user-images.githubusercontent.com/18741380/222857846-1a753d81-b12f-4cc3-ad2a-61c57358bd39.png">
+
+ Next, start the server using the command: ```node index.js```
+ 
+ <img width="566" alt="image" src="https://user-images.githubusercontent.com/18741380/222858013-9b68e414-022a-4185-a77d-1790ae9667fa.png">
+
+ 
+ 
+ 
   
 
+
+ 
+ 
+ 
