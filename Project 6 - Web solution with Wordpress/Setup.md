@@ -38,7 +38,11 @@ To check if the PV have been created type: ```sudo pvs```
 
 <img width="1255" alt="image" src="https://github.com/abdulxs/DevOps-Projects/assets/18741380/bb9c111a-2b02-467c-8c78-fc79a081ce73">
 
-Next, Create the volume group and name it webdata-vg: ```sudo vgcreate webdata-vg /dev/xvdf1 /dev/xvdg1 /dev/xvdh1```
+added an extra volume, attached and did all previous configurations done for other volumes
+
+<img width="622" alt="image" src="https://github.com/abdulxs/DevOps-Projects/assets/18741380/27c815c1-abb4-485e-8ba3-a2747b3a39bd">
+
+Next, Create the volume group and name it webdata-vg: ```sudo vgcreate webdata-vg /dev/xvdf1 /dev/xsdb1 /dev/sda1```
 
 View newly created volume group type: ```sudo vgs```
 
