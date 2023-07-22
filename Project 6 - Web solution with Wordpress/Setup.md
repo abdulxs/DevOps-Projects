@@ -82,7 +82,26 @@ Next, update /etc/fstab file so that the mount configuration will persist after 
 
 The UUID of the device will be used to update the /etc/fstab file to get the UUID type: ```sudo blkid``` and copy both the apps-vg and logs-vg UUID (Excluding the double quotes)
 
+<img width="1429" alt="image" src="https://github.com/abdulxs/DevOps-Projects/assets/18741380/167f055a-599a-4cd1-8da4-4e80ec09e31e">
+
+logs-vg = be859168-ddab-408a-b8e8-bc1e44db7301
+apps-vg = 747a4abb-c8d1-4d02-95d5-9b8677fcd058
+
 Type ```sudo vi /etc/fstab``` to open editor and update using the UUID you copied.
+
+<img width="1186" alt="image" src="https://github.com/abdulxs/DevOps-Projects/assets/18741380/b711ce0f-e9d7-44a9-8209-93309041f0e5">
+
+Test the configuration and reload the daemon:
+
+```
+sudo mount -a`
+sudo systemctl daemon-reload
+```
+
+Verify your setup by running ```df -h```
+
+<img width="1434" alt="image" src="https://github.com/abdulxs/DevOps-Projects/assets/18741380/94379424-784c-4b47-9641-bd3b14fe3832">
+
 
 
 
