@@ -42,9 +42,48 @@ added an extra volume, attached and did all previous configurations done for oth
 
 <img width="622" alt="image" src="https://github.com/abdulxs/DevOps-Projects/assets/18741380/27c815c1-abb4-485e-8ba3-a2747b3a39bd">
 
-Next, Create the volume group and name it webdata-vg: ```sudo vgcreate webdata-vg /dev/xvdf1 /dev/xsdb1 /dev/sda1```
+Next, Create the volume group and name it webdata-vg: ```sudo vgcreate webdata-vg /dev/xvdf1 /dev/sdb1 /dev/sdc1```
 
 View newly created volume group type: ```sudo vgs```
+
+<img width="813" alt="image" src="https://github.com/abdulxs/DevOps-Projects/assets/18741380/6232f751-7f94-4226-8d2e-5c4044c258d5">
+
+Create 2 logical volumes using lvcreate utility. Name them: ```apps-lv``` for storing data for the Website and ```logs-lv``` for storing data for logs.
+
+```
+sudo lvcreate -n apps-lv -L 14G webdata-vg
+sudo lvcreate -n logs-lv -L 14G webdata-vg
+```
+
+<img width="860" alt="image" src="https://github.com/abdulxs/DevOps-Projects/assets/18741380/22909b9d-fb66-45ec-a62b-ad9e26ba616d">
+
+Verify Logical Volume has been created successfully by running: ```sudo lvs```
+Next, format the logical volumes with ext4 filesystem:
+
+```
+sudo mkfs -t ext4 /dev/webdata-vg/apps-lv
+sudo mkfs -t ext4 /dev/webdata-vg/logs-lv
+```
+<img width="868" alt="image" src="https://github.com/abdulxs/DevOps-Projects/assets/18741380/32263458-d84d-4647-9c38-818d557ab473">
+
+Next, create mount points for logical volumes. Create /var/www/html directory to store website files: ```sudo mkdir -p /var/www/html``` then mount /var/www/html on apps-lv logical volume : ```sudo mount /dev/webdata-vg/apps-lv /var/www/html/```
+
+<img width="853" alt="image" src="https://github.com/abdulxs/DevOps-Projects/assets/18741380/75d24f85-2d1b-429f-8847-91ab36fd2d70">
+
+Create /home/recovery/logs to store backup of log data: ```sudo mkdir -p /home/recovery/logs```
+
+Use rsync utility to backup all the files in the log directory /var/log into /home/recovery/logs (It is important to backup all data on the /var/log directory because all the data will be deleted during the mount process) Type the following command: ```sudo rsync -av /var/log/. /home/recovery/logs/```
+
+Mount /var/log on logs-lv logical volume: ```sudo mount /dev/webdata-vg/logs-lv /var/log```
+
+Finally, restore deleted log files back into /var/log directory: ```sudo rsync -av /home/recovery/logs/. /var/log```
+
+Next, update /etc/fstab file so that the mount configuration will persist after restart of the server.
+
+The UUID of the device will be used to update the /etc/fstab file to get the UUID type: ```sudo blkid``` and copy both the apps-vg and logs-vg UUID (Excluding the double quotes)
+
+Type ```sudo vi /etc/fstab``` to open editor and update using the UUID you copied.
+
 
 
 
