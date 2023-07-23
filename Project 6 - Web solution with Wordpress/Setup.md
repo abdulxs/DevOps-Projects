@@ -104,7 +104,6 @@ Verify your setup by running ```df -h```
 
 
 
-
 Part 2 - Prepare the Database Server
 
 
@@ -112,6 +111,26 @@ Part 2 - Prepare the Database Server
 Launch a second RedHat EC2 instance and name it DB Server
 
 Repeat the same steps as for the Web Server, but instead of apps-lv create db-lv and mount it to /db directory instead of /var/www/html/.
+
+<img width="1440" alt="image" src="https://github.com/abdulxs/DevOps-Projects/assets/18741380/044a74a4-c120-4324-8c88-90027ee71ef8">
+
+<img width="1440" alt="image" src="https://github.com/abdulxs/DevOps-Projects/assets/18741380/044ae5eb-b6c6-4ddf-80c8-84733474f229">
+
+<img width="1440" alt="image" src="https://github.com/abdulxs/DevOps-Projects/assets/18741380/e56dcc2f-f9bd-41d7-b5d1-aa7ca24ae3f9">
+
+<img width="1440" alt="image" src="https://github.com/abdulxs/DevOps-Projects/assets/18741380/fa61aceb-ef54-4150-abc3-bffe5a80c834">
+
+<img width="1440" alt="image" src="https://github.com/abdulxs/DevOps-Projects/assets/18741380/aee870a0-c122-48d8-a223-d2b54730a139">
+
+<img width="1440" alt="image" src="https://github.com/abdulxs/DevOps-Projects/assets/18741380/2c6e348d-5e85-4cdc-ac18-32ed12520cb2">
+
+
+logs-vg uuid = 7947ff40-7954-4245-9b46-dbb3f2cdba71
+db-vg uuid = 93ae9603-ce03-4baa-8e39-03d6fed6c3a8
+
+<img width="567" alt="image" src="https://github.com/abdulxs/DevOps-Projects/assets/18741380/14a75c0a-b1c6-4fe6-a255-f7b418766b1a">
+
+<img width="1440" alt="image" src="https://github.com/abdulxs/DevOps-Projects/assets/18741380/d567414f-0f47-417c-b546-89271e4c9429">
 
 
 
