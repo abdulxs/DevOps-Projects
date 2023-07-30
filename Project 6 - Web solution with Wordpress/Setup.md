@@ -151,8 +151,8 @@ sudo systemctl start httpd
 install PHP and it’s depemdencies:
 
 ```
-sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
-sudo yum install yum-utils http://rpms.remirepo.net/enterprise/remi-release-8.rpm
+sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+sudo yum install yum-utils http://rpms.remirepo.net/enterprise/remi-release-9.rpm
 sudo yum module list php
 sudo yum module reset php
 sudo yum module enable php:remi-7.4
