@@ -211,7 +211,7 @@ Cannot initiate the connection to security.ubuntu.com:80 (2620:2d:4002:1::103). 
 
 Troubleshooting Notes
 
-This has taken down on a deep dive of network troubleshooting
+This has taken me on a deep dive of network troubleshooting
 I have tested the dns resolution of the instance, apparently, when I ping ```security.ubuntu.com:80``` it comes back as successful and when I run ```sudo apt update -y``` manually on the instance, it is also successful.
 However, there appears to be an underlying network issue preventing the commands from being successful when run automatically
 A review of the network configuration is still in progress
