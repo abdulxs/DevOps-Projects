@@ -193,6 +193,9 @@ resource "aws_instance" "web-server-instance" {
 Worth noting that on deployment, the instance is initialized and everything seems to work fine, except when I try to access the web server in my browser, I get this error
 <img width="999" alt="image" src="https://github.com/abdulxs/DevOps-Projects/assets/18741380/b6c03a66-1d29-4e7f-a26e-76b19df6c9da">
 
+<img width="1187" alt="image" src="https://github.com/abdulxs/DevOps-Projects/assets/18741380/271d972e-ee7b-43d8-86aa-489c01f4a6d0">
+
+
 I ssh into the instance and I checked the logs with this command 
 ```
 sudo -i
