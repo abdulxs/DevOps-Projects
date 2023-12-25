@@ -209,7 +209,12 @@ This is also why we are unable to connect to the server via port 80 or 443
 Cannot initiate the connection to security.ubuntu.com:80 (2620:2d:4002:1::103). - connect (101: Network is unreachable) Could not connect to security.ubuntu.com:80 (185.125.190.36), connection timed out Could not connect to security.ubuntu.com:80 (91.189.91.81), connection timed out Could not connect to security.ubuntu.com:80 (185.125.190.39), connection timed out Could not connect to security.ubuntu.com:80 (91.189.91.82), connection timed out Could not connect to security.ubuntu.com:80 (91.189.91.83), connection timed out
 ```
 
-Currently troubleshooting
+Troubleshooting Notes
+
+This has taken down on a deep dive of network troubleshooting
+I have tested the dns resolution of the instance, apparently, when I ping ```security.ubuntu.com:80``` it comes back as successful and when I run ```sudo apt update -y``` manually on the instance, it is also successful.
+However, there appears to be an underlying network issue preventing the commands from being successful when run automatically
+A review of the network configuration is still in progress
 
 
 
