@@ -216,6 +216,10 @@ I have tested the dns resolution of the instance, apparently, when I ping ```sec
 However, there appears to be an underlying network issue preventing the commands from being successful when run automatically
 A review of the network configuration is still in progress
 
+I installed apache manually and it was successful. I'll run ```terraform destroy``` and try it all over to try to figure out why it does not run automatically
+<img width="453" alt="image" src="https://github.com/abdulxs/DevOps-Projects/assets/18741380/c59818ee-e3bd-4ac1-aeff-8048055a32e8">
+
+
 
 
 
