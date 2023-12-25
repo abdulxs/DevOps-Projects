@@ -50,7 +50,7 @@ resource "aws_route_table" "prod-route-table" {
 
   route {
     ipv6_cidr_block        = "::/0"
-    egress_only_gateway_id = aws_internet_gateway.gw.id
+    gateway_id = aws_internet_gateway.gw.id
   }
 
   tags = {
@@ -157,19 +157,56 @@ resource "aws_eip" "one" {
   depends_on = [ aws_internet_gateway.gw ]
 }
 ```
-Create Ubuntu server and install/anable apache
+Create Ubuntu server and install/enable apache
+
+ensure to specify the availablility zone to the same as specified for the subnet
+Ensure to add your key name that was downloaded at the start
+Specify the network interface
 
 ```
 resource "aws_instance" "web-server-instance" {
   ami           = "ami-0014ce3e52359afbd"
   instance_type = "t3.micro"
   availability_zone = "eu-north-1a"
+  
+  key_name = "lagbaja"
+  network_interface {
+    device_index = 0
+    network_interface_id = aws_network_interface.web-server-nic.id
+  }
+
+  user_data = <<-EOF
+                #!/bin/bash
+                sudo apt update -y
+                sudo apt install apache2 -y
+                sudo systemctl start apache2
+                sudo bash -c 'echo our web server > /var/www/html/index.html'
+                EOF
+
   tags = {
-    Name = "Ubuntu"
+    Name = "Web-server"
   }
 }
 ```
 
+
+Worth noting that on deployment, the instance is initialized and everything seems to work fine, except when I try to access the web server in my browser, I get this error
+<img width="999" alt="image" src="https://github.com/abdulxs/DevOps-Projects/assets/18741380/b6c03a66-1d29-4e7f-a26e-76b19df6c9da">
+
+I ssh into the instance and I checked the logs with this command 
+```
+sudo -i
+
+cat /var/log/cloud-init-log
+``` 
+tI observed some errors with a snippet below, it appears there is a connection issue preventing the script in the user data from running successfully. Due to this, it is unable to connect to the blahblah address and by extension install apache on this instance
+This is also why we are unable to connect to the server via port 80 or 443
+
+```
+Cannot initiate the connection to security.ubuntu.com:80 (2620:2d:4002:1::103). - connect (101: Network is unreachable) Could not connect to security.ubuntu.com:80 (185.125.190.36), connection timed out Could not connect to security.ubuntu.com:80 (91.189.91.81), connection timed out Could not connect to security.ubuntu.com:80 (185.125.190.39), connection timed out Could not connect to security.ubuntu.com:80 (91.189.91.82), connection timed out Could not connect to security.ubuntu.com:80 (91.189.91.83), connection timed out
+```
+
+Currently troubleshooting
 
 
 
