@@ -49,4 +49,6 @@ Try a ping from the inventory to a target machines
 ansible ansible-target-1 -m ping -i inventory.txt
 ```
 
+<img width="1368" alt="image" src="https://github.com/abdulxs/DevOps-Projects/assets/18741380/4566a157-1d23-4908-a543-b25ded641107">
+
 
