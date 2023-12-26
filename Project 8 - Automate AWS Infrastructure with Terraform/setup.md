@@ -1,9 +1,14 @@
 Automate AWS Infrastructure with Terraform
 
+The aim of this project is to set up aws cloud infrastructure using Iac tool - Terraform.
+It will include provisioning a VPC, internet gateway, creating a route table, subnet, security group, network interface and an ec2 instance running ubuntu OS on which we will install apache2 to host a webserver.
+This will be achieved with the use of Terraform code.
 
+step 1:
 Set up key-pair on AWS before proceeding so that you have access keys
 Download the .pem file and store to your project directory
 
+step 2:
 Set up VPC
 
 create a terraform file in your project directory, let's name it main.tf
@@ -21,6 +26,7 @@ resource "aws_vpc" "prod-vpc" {
 }
 ```
 
+step 3:
 Create an internet gateway
 Repeat same step as above by referencing the terraform documentation for creating aws_internet_gateway resource
 copy the basic usage, paste in your ```main.tf``` file and modify it to reference your vpc resource as below 
@@ -32,6 +38,7 @@ resource "aws_internet_gateway" "gw" {
 }
 ```
 
+step 4:
 Create a custom route table
 
 search for 'aws_route_table' resource in the Terraform docs
@@ -59,6 +66,7 @@ resource "aws_route_table" "prod-route-table" {
 }
 ```
 
+step 5:
 Create a subnet
 
 ```
@@ -73,6 +81,7 @@ resource "aws_subnet" "subnet-1" {
 }
 ```
 
+step 6:
 Associate subnet with route table
 
 ```
@@ -82,6 +91,7 @@ resource "aws_route_table_association" "a" {
 }
 ```
 
+step 7:
 Create security group
 
 We will reference our vpc_id, and
@@ -133,6 +143,8 @@ resource "aws_security_group" "allow_web" {
   }
 }
 ```
+
+step 8:
 Create a network interface with an Ip in the subnet created in previous steps
 
 reference the subnet
@@ -146,7 +158,7 @@ resource "aws_network_interface" "web-server-nic" {
   security_groups = [aws_security_group.allow_web.id]
 }
 ```
-
+step 9:
 Assign an elastic ip to the network interface created in the last step
 
 ```
@@ -157,6 +169,8 @@ resource "aws_eip" "one" {
   depends_on = [ aws_internet_gateway.gw ]
 }
 ```
+
+step 10:
 Create Ubuntu server and install/enable apache
 
 ensure to specify the availablility zone to the same as specified for the subnet
@@ -202,7 +216,7 @@ sudo -i
 
 cat /var/log/cloud-init-log
 ``` 
-tI observed some errors with a snippet below, it appears there is a connection issue preventing the script in the user data from running successfully. Due to this, it is unable to connect to the blahblah address and by extension install apache on this instance
+I observed some errors with a snippet below, it appears there is a connection issue preventing the script in the user data from running successfully. Due to this, it is unable to connect to security.ubuntu.com:80 and by extension install apache on this instance.
 This is also why we are unable to connect to the server via port 80 or 443
 
 ```
